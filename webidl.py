@@ -152,12 +152,23 @@ def p_DictionaryMembers_empty(p):
     p[0] = []
 
 def p_DictionaryMember(p):
-    'DictionaryMember : Type identifier DefaultValue ";"'
+    'DictionaryMember : Type identifier Default ";"'
     p[0] = ['attribute', p[2]]
 
-def p_DefaultValue(p):
-    'DefaultValue : "=" ConstValue'
+def p_Default(p):
+    'Default : "=" DefaultValue'
     p[0] = p[2]
+
+def p_Default_empty(p):
+    'Default :'
+    p[0] = None
+
+def p_DefaultValue(p):
+    '''
+    DefaultValue : ConstValue
+                 | string
+    '''
+    p[0] = p[1]
 
 def p_DefaultValue_empty(p):
     'DefaultValue :'
@@ -188,10 +199,7 @@ def p_Const(p):
     p[0] = ['const', p[3]]
 
 def p_ConstValue(p):
-    '''
-    ConstValue : integer
-               | string
-    '''
+    'ConstValue : integer'
     p[0] = p[1]
 
 def p_AttributeOrOperation_stringifier(p):
