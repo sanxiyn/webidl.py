@@ -55,6 +55,7 @@ reserved = {
     'deleter',
     'dictionary',
     'double',
+    'enum',
     'exception',
     'float',
     'getraises',
@@ -103,6 +104,7 @@ def p_Definition(p):
                | PartialInterface
                | Dictionary
                | Exception
+               | Enum
                | Typedef
                | ImplementsStatement
     '''
@@ -184,6 +186,22 @@ def p_ExceptionMembers(p):
 
 def p_ExceptionMembers_empty(p):
     'ExceptionMembers :'
+    p[0] = []
+
+def p_Enum(p):
+    'Enum : enum identifier "{" EnumValueList "}" ";"'
+    p[0] = ['enum', p[2], p[4]]
+
+def p_EnumValueList(p):
+    'EnumValueList : string EnumValues'
+    p[0] = [p[1]] + p[2]
+
+def p_EnumValues(p):
+    'EnumValues : "," string EnumValues'
+    p[0] = [p[2]] + p[3]
+
+def p_EnumValues_empty(p):
+    'EnumValues :'
     p[0] = []
 
 def p_Typedef(p):
