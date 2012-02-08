@@ -90,28 +90,21 @@ def t_identifier(t):
 import ply.yacc as yacc
 
 def p_Definitions(p):
-    'Definitions : Definition Definitions'
-    p[0] = [p[1]] + p[2]
+    'Definitions : ExtendedAttributeList Definition Definitions'
+    p[0] = [p[2]] + p[3]
 
 def p_Definitions_empty(p):
     'Definitions :'
     p[0] = []
 
 def p_Definition(p):
-    'Definition : ExtendedAttributeList NormalDefinition'
-    p[0] = p[2]
-
-def p_Definition_partial(p):
-    'Definition : PartialInterface'
-    p[0] = p[1]
-
-def p_NormalDefinition(p):
     '''
-    NormalDefinition : Interface
-                     | Dictionary
-                     | Exception
-                     | Typedef
-                     | ImplementsStatement
+    Definition : Interface
+               | PartialInterface
+               | Dictionary
+               | Exception
+               | Typedef
+               | ImplementsStatement
     '''
     p[0] = p[1]
 
