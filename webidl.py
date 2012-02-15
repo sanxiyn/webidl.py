@@ -52,6 +52,7 @@ reserved = {
     'any',
     'attribute',
     'boolean',
+    'caller',
     'const',
     'creator',
     'deleter',
@@ -280,12 +281,14 @@ def p_Specials_empty(p):
     'Specials :'
     p[0] = []
 
+# caller from 20110712 draft
 def p_Special(p):
     '''
     Special : getter
             | setter
             | creator
             | deleter
+            | caller
     '''
     p[0] = p[1]
 
