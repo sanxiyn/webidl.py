@@ -7,6 +7,7 @@ import ply.lex as lex
 tokens = [
     'ellipsis',
     'array',
+    'scope',
     'hexinteger',
     'decimalinteger',
     'string',
@@ -29,6 +30,7 @@ def t_error(t):
 
 t_ellipsis = r'\.\.\.'
 t_array = r'\[\]'
+t_scope = r'::'
 
 def t_hexinteger(t):
     r'0[xX][0-9a-fA-F]+'
@@ -529,13 +531,25 @@ def p_ScopedNames_empty(p):
     'ScopedNames :'
     p[0] = []
 
+# From 20110927 draft
 def p_ScopedName(p):
     'ScopedName : RelativeScopedName'
-    p[0] = p[1]
+    p[0] = '::'.join(p[1])
 
+# From 20110927 draft
 def p_RelativeScopedName(p):
-    'RelativeScopedName : identifier'
-    p[0] = p[1]
+    'RelativeScopedName : identifier ScopedNameParts'
+    p[0] = [p[1]] + p[2]
+
+# From 20110927 draft
+def p_ScopedNameParts(p):
+    'ScopedNameParts : scope identifier ScopedNameParts'
+    p[0] = [p[2]] + p[3]
+
+# From 20110927 draft
+def p_ScopedNameParts_empty(p):
+    'ScopedNameParts :'
+    p[0] = []
 
 def p_integer(p):
     '''
