@@ -20,7 +20,7 @@ def t_newline(t):
     r'\n'
     t.lexer.lineno += 1
 
-t_ignore = r' '
+t_ignore = ' \t'
 t_ignore_line_comment = r'//.*'
 t_ignore_block_comment = r'/\*.*?\*/'
 
