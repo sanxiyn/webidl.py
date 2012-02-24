@@ -68,6 +68,7 @@ reserved = {
     'interface',
     'long',
     'optional',
+    'or',
     'partial',
     'raises',
     'readonly',
@@ -239,7 +240,7 @@ def p_StringifierAttributeOrOperation(p):
     p[0] = p[1]
 
 def p_Attribute(p):
-    'Attribute : ReadOnly attribute AttributeType identifier Get ";"'
+    'Attribute : ReadOnly attribute Type identifier Get ";"'
     p[0] = ['attribute', p[4]]
 
 def p_ReadOnly(p):
@@ -373,7 +374,7 @@ def p_ExceptionMember(p):
     p[0] = p[1]
 
 def p_ExceptionField(p):
-    'ExceptionField : AttributeType identifier ";"'
+    'ExceptionField : Type identifier ";"'
     p[0] = ['attribute', p[2]]
 
 def p_ExtendedAttributeList(p):
@@ -428,23 +429,55 @@ def p_OhterOrComma(p):
     '''
 
 def p_Type(p):
-    '''
-    Type : AttributeType
-         | SequenceType
-    '''
+    'Type : SingleType'
     p[0] = p[1]
 
-def p_SequenceType(p):
-    'SequenceType : sequence "<" Type ">" Null'
-    p[0] = 'sequence<' + p[3] + '>' + p[5]
+def p_Type_union(p):
+    'Type : UnionType TypeSuffix'
+    p[0] = p[1] + p[2]
 
-def p_AttributeType(p):
+def p_SingleType(p):
+    'SingleType : NonAnyType'
+    p[0] = p[1]
+
+def p_SingleType_any(p):
+    'SingleType : any TypeSuffixStartingWithArray'
+    p[0] = p[1] + p[2]
+
+def p_UnionType(p):
+    'UnionType : "(" UnionMemberType or UnionMemberType UnionMemberTypes ")"'
+    p[0] = '(' + p[2] + ' or ' + p[4] + p[5] + ')'
+
+def p_UnionMemberType(p):
+    'UnionMemberType : NonAnyType'
+    p[0] = p[1]
+
+def p_UnionMemberType_union(p):
+    'UnionMemberType : UnionType TypeSuffix'
+    p[0] = p[1] + p[2]
+
+def p_UnionMemberType_any(p):
+    'UnionMemberType : any array TypeSuffix'
+    p[0] = p[1] + p[2] + p[3]
+
+def p_UnionMemberTypes(p):
+    'UnionMemberTypes : or UnionMemberType UnionMemberTypes'
+    p[0] = ' or ' + p[2] + p[3]
+
+def p_UnionMemberTypes_empty(p):
+    'UnionMemberTypes :'
+    p[0] = ''
+
+def p_NonAnyType(p):
     '''
-    AttributeType : PrimitiveOrStringType TypeSuffix
-                  | ScopedName TypeSuffix
-                  | any TypeSuffixStartingWithArray
+    NonAnyType : PrimitiveOrStringType TypeSuffix
+               | ScopedName TypeSuffix
     '''
     p[0] = p[1] + p[2]
+
+def p_NonAnyType_sequence(p):
+    'NonAnyType : sequence "<" Type ">" Null'
+    p[0] = 'sequence<' + p[3] + '>' + p[5]
 
 def p_ConstType(p):
     'ConstType : PrimitiveOrStringType Null'
