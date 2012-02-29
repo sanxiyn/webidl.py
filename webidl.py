@@ -52,6 +52,7 @@ reserved = {
     'any',
     'attribute',
     'boolean',
+    'callback',
     'caller',
     'const',
     'creator',
@@ -104,7 +105,7 @@ def p_Definitions_empty(p):
 
 def p_Definition(p):
     '''
-    Definition : Interface
+    Definition : CallbackOrInterface
                | PartialInterface
                | Dictionary
                | Exception
@@ -112,6 +113,23 @@ def p_Definition(p):
                | Typedef
                | ImplementsStatement
     '''
+    p[0] = p[1]
+
+def p_CallbackOrInterface_callback(p):
+    'CallbackOrInterface : callback CallbackRestOrInterface'
+    p[0] = p[2]
+
+def p_CallbackOrInterface(p):
+    'CallbackOrInterface : Interface'
+    p[0] = p[1]
+
+def p_CallbackRestOrInterface(p):
+    'CallbackRestOrInterface : CallbackRest'
+    p[0] = ['callback'] + p[1]
+
+def p_CallbackRestOrInterface_interface(p):
+    'CallbackRestOrInterface : Interface'
+    p[1][0] = 'callback interface'
     p[0] = p[1]
 
 def p_Interface(p):
@@ -207,6 +225,10 @@ def p_EnumValues(p):
 def p_EnumValues_empty(p):
     'EnumValues :'
     p[0] = []
+
+def p_CallbackRest(p):
+    'CallbackRest : identifier "=" ReturnType "(" ArgumentList ")" ";"'
+    p[0] = [p[1], '']
 
 def p_Typedef(p):
     'Typedef : typedef Type identifier ";"'
