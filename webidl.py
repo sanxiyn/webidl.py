@@ -135,9 +135,10 @@ def p_CallbackRestOrInterface_interface(p):
     p[1][0] = 'callback interface'
     p[0] = p[1]
 
+# ExtendedAttributeList from WebKitIDL
 def p_Interface(p):
-    'Interface : interface identifier Inheritance "{" InterfaceMembers "}" ";"'
-    p[0] = ['interface', p[2], p[5]]
+    'Interface : interface ExtendedAttributeList identifier Inheritance "{" InterfaceMembers "}" ";"'
+    p[0] = ['interface', p[3], p[6]]
 
 def p_PartialInterface(p):
     'PartialInterface : partial interface identifier "{" InterfaceMembers "}" ";"'
@@ -264,9 +265,10 @@ def p_StringifierAttributeOrOperation(p):
     'StringifierAttributeOrOperation : Attribute'
     p[0] = p[1]
 
+# ExtendedAttributeList from WebKitIDL
 def p_Attribute(p):
-    'Attribute : ReadOnly attribute Type identifier Get ";"'
-    p[0] = ['attribute', p[4]]
+    'Attribute : ReadOnly attribute ExtendedAttributeList Type identifier Get ";"'
+    p[0] = ['attribute', p[5]]
 
 def p_ReadOnly(p):
     'ReadOnly : readonly'
@@ -361,9 +363,10 @@ def p_Arguments_empty(p):
     'Arguments :'
     p[0] = []
 
+# Second ExtendedAttributeList from WebKitIDL
 def p_Argument(p):
-    'Argument : ExtendedAttributeList In Optional Type Ellipsis identifier'
-    p[0] = p[6]
+    'Argument : ExtendedAttributeList In Optional ExtendedAttributeList Type Ellipsis identifier'
+    p[0] = p[7]
 
 # From 20110712 draft
 def p_In(p):
