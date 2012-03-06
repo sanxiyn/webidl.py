@@ -20,9 +20,12 @@ def t_newline(t):
     r'\n'
     t.lexer.lineno += 1
 
+def t_block_comment(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+
 t_ignore = ' \t'
 t_ignore_line_comment = r'//.*'
-t_ignore_block_comment = r'/\*.*?\*/'
 
 def t_error(t):
     print "Illegal character '%s'" % (t.value[0],)
