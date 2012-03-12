@@ -1,5 +1,7 @@
 # Web IDL parser
 
+import sys
+
 # Lexer
 
 import ply.lex as lex
@@ -28,7 +30,7 @@ t_ignore = ' \t'
 t_ignore_line_comment = r'//.*'
 
 def t_error(t):
-    print "Illegal character '%s'" % (t.value[0],)
+    print >>sys.stderr, "Illegal character '%s'" % (t.value[0],)
     t.lexer.skip(1)
 
 t_ellipsis = r'\.\.\.'
@@ -630,7 +632,6 @@ def parse(input):
     return parser.parse(input)
 
 if __name__ == '__main__':
-    import sys
     args = sys.argv[1:]
     if len(args) != 1:
         print 'Usage: webidl.py IDL'
