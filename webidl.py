@@ -640,10 +640,12 @@ def p_integer(p):
 
 # API
 
+lexer = lex.lex()
+parser = yacc.yacc()
+
 def parse(input):
-    lexer = lex.lex()
-    parser = yacc.yacc()
-    return parser.parse(input)
+    local_lexer = lexer.clone()
+    return parser.parse(input, lexer=local_lexer)
 
 if __name__ == '__main__':
     args = sys.argv[1:]
