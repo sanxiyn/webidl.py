@@ -73,6 +73,7 @@ reserved = {
     'in',
     'interface',
     'long',
+    'module',
     'optional',
     'or',
     'partial',
@@ -102,7 +103,10 @@ import ply.yacc as yacc
 
 def p_Definitions(p):
     'Definitions : ExtendedAttributeList Definition Definitions'
-    p[0] = [p[2]] + p[3]
+    if p[2][0] == 'module':
+        p[0] = p[2][2] + p[3]
+    else:
+        p[0] = [p[2]] + p[3]
 
 def p_Definitions_empty(p):
     'Definitions :'
@@ -110,7 +114,8 @@ def p_Definitions_empty(p):
 
 def p_Definition(p):
     '''
-    Definition : CallbackOrInterface
+    Definition : Module
+               | CallbackOrInterface
                | PartialInterface
                | Dictionary
                | Exception
@@ -119,6 +124,15 @@ def p_Definition(p):
                | ImplementsStatement
     '''
     p[0] = p[1]
+
+# From 20110927 draft
+# Optional semicolon from WebKitIDL
+def p_Module(p):
+    '''
+    Module : module identifier "{" Definitions "}" ";"
+           | module identifier "{" Definitions "}"
+    '''
+    p[0] = ['module', p[2], p[4]]
 
 def p_CallbackOrInterface_callback(p):
     'CallbackOrInterface : callback CallbackRestOrInterface'
