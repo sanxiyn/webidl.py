@@ -622,9 +622,12 @@ def p_integer(p):
     '''
     p[0] = p[1]
 
-lexer = lex.lex()
-parser = yacc.yacc()
-parse = parser.parse
+# API
+
+def parse(input):
+    lexer = lex.lex()
+    parser = yacc.yacc()
+    return parser.parse(input)
 
 if __name__ == '__main__':
     import sys
