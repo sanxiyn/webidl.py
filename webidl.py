@@ -128,10 +128,7 @@ def p_Definition(p):
 # From 20110927 draft
 # Optional semicolon from WebKitIDL
 def p_Module(p):
-    '''
-    Module : module identifier "{" Definitions "}" ";"
-           | module identifier "{" Definitions "}"
-    '''
+    'Module : module identifier "{" Definitions "}" optional_semicolon'
     p[0] = ['module', p[2], p[4]]
 
 def p_CallbackOrInterface_callback(p):
@@ -152,8 +149,9 @@ def p_CallbackRestOrInterface_interface(p):
     p[0] = p[1]
 
 # ExtendedAttributeList from WebKitIDL
+# Optional semicolon from WebKitIDL
 def p_Interface(p):
-    'Interface : interface ExtendedAttributeList identifier Inheritance "{" InterfaceMembers "}" ";"'
+    'Interface : interface ExtendedAttributeList identifier Inheritance "{" InterfaceMembers "}" optional_semicolon'
     p[0] = ['interface', p[3], p[6]]
 
 def p_PartialInterface(p):
@@ -637,6 +635,12 @@ def p_integer(p):
             | hexinteger
     '''
     p[0] = p[1]
+
+def p_optional_semicolon(p):
+    '''
+    optional_semicolon : ";"
+                       |
+    '''
 
 # API
 
