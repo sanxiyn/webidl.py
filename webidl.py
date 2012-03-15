@@ -18,6 +18,11 @@ tokens = [
 
 literals = '(),:;<=>?[]{}'
 
+# Used in WebKitIDL Conditional attribute
+literals += '&|'
+# Used in WebKitIDL InterfaceUUID/ImplementationUUID attribute
+literals += '-'
+
 def t_newline(t):
     r'\n'
     t.lexer.lineno += 1
