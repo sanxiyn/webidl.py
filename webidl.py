@@ -85,6 +85,7 @@ reserved = {
     'raises',
     'readonly',
     'sequence',
+    'setraises',
     'setter',
     'short',
     'static',
@@ -287,7 +288,7 @@ def p_StringifierAttributeOrOperation(p):
 
 # ExtendedAttributeList from WebKitIDL
 def p_Attribute(p):
-    'Attribute : ReadOnly attribute ExtendedAttributeList Type identifier Get ";"'
+    'Attribute : ReadOnly attribute ExtendedAttributeList Type identifier AttributeRaises ";"'
     p[0] = ['attribute', p[5]]
 
 def p_ReadOnly(p):
@@ -298,17 +299,44 @@ def p_ReadOnly_empty(p):
     'ReadOnly :'
     p[0] = False
 
-# From 20110712 draft
-def p_Get(p):
+def p_AttributeRaises(p):
     '''
-    Get : GetRaises
-        |
+    AttributeRaises : GetRaises SetRaises
+                    | GetterRaises
+                    | SetterRaises
+                    | GetterRaises "," SetterRaises
+                    | SetterRaises "," GetterRaises
     '''
 
 # From 20110712 draft
 def p_GetRaises(p):
     'GetRaises : getraises ExceptionList'
     p[0] = p[2]
+
+# From 20110712 draft
+def p_GetRaises_empty(p):
+    'GetRaises :'
+    p[0] = []
+
+# From WebKitIDL
+def p_GetterRaises(p):
+    'GetterRaises : getter raises ExceptionList'
+    p[0] = p[3]
+
+# From 20110712 draft
+def p_SetRaises(p):
+    'SetRaises : setraises ExceptionList'
+    p[0] = p[2]
+
+# From 20110712 draft
+def p_SetRaises_empty(p):
+    'SetRaises :'
+    p[0] = []
+
+# From WebKitIDL
+def p_SetterRaises(p):
+    'SetterRaises : setter raises ExceptionList'
+    p[0] = p[3]
 
 def p_Operation(p):
     'Operation : Qualifiers OperationRest'
