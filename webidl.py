@@ -256,9 +256,10 @@ def p_ImplementsStatement(p):
     'ImplementsStatement : ScopedName implements ScopedName ";"'
     p[0] = ['implements', p[1], p[3]]
 
+# ExtendedAttributeList from WebKitIDL
 def p_Const(p):
-    'Const : const ConstType identifier "=" ConstValue ";"'
-    p[0] = ['const', p[3]]
+    'Const : const ExtendedAttributeList ConstType identifier "=" ConstValue ";"'
+    p[0] = ['const', p[4]]
 
 def p_ConstValue(p):
     'ConstValue : integer'
