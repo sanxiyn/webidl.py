@@ -417,10 +417,19 @@ def p_Arguments_empty(p):
     'Arguments :'
     p[0] = []
 
-# Second ExtendedAttributeList from WebKitIDL
 def p_Argument(p):
-    'Argument : ExtendedAttributeList In Optional ExtendedAttributeList Type Ellipsis identifier'
-    p[0] = p[7]
+    'Argument : ExtendedAttributeList In OptionalOrRequiredArgument'
+    p[0] = p[3]
+
+# ExtendedAttributeList from WebKitIDL
+def p_OptionalOrRequiredArgument_optional(p):
+    'OptionalOrRequiredArgument : optional ExtendedAttributeList Type identifier Default'
+    p[0] = p[4]
+
+# ExtendedAttributeList from WebKitIDL
+def p_OptionalOrRequiredArgument(p):
+    'OptionalOrRequiredArgument : ExtendedAttributeList Type Ellipsis identifier'
+    p[0] = p[4]
 
 # From 20110712 draft
 def p_In(p):
@@ -430,14 +439,6 @@ def p_In(p):
 # From 20110712 draft
 def p_In_empty(p):
     'In :'
-    p[0] = False
-
-def p_Optional(p):
-    'Optional : optional'
-    p[0] = True
-
-def p_Optional_empty(p):
-    'Optional :'
     p[0] = False
 
 def p_Ellipsis(p):
