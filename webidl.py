@@ -80,6 +80,7 @@ reserved = {
     'legacycaller',
     'long',
     'module',
+    'null',
     'optional',
     'or',
     'partial',
@@ -269,7 +270,10 @@ def p_Const(p):
     p[0] = ['const', p[4]]
 
 def p_ConstValue(p):
-    'ConstValue : integer'
+    '''
+    ConstValue : integer
+               | null
+    '''
     p[0] = p[1]
 
 def p_AttributeOrOperation_stringifier(p):
