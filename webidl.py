@@ -77,6 +77,7 @@ reserved = {
     'implements',
     'in',
     'interface',
+    'legacycaller',
     'long',
     'module',
     'optional',
@@ -364,6 +365,7 @@ def p_Special(p):
             | setter
             | creator
             | deleter
+            | legacycaller
             | caller
     '''
     p[0] = p[1]
