@@ -105,6 +105,8 @@ def t_identifier(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in reserved:
         t.type = t.value
+    if t.value == 'null':
+        t.value = None
     if t.value == 'true':
         t.value = True
     if t.value == 'false':
