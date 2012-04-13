@@ -13,8 +13,6 @@ tokens = [
     'hexinteger',
     'decimalinteger',
     'string',
-    'true',
-    'false',
     'identifier',
 ]
 
@@ -59,16 +57,6 @@ def t_string(t):
     t.value = t.value[1:-1]
     return t
 
-def t_true(t):
-    r'true'
-    t.value = True
-    return t
-
-def t_false(t):
-    r'false'
-    t.value = False
-    return t
-
 reserved = {
     'DOMString',
     'any',
@@ -83,6 +71,7 @@ reserved = {
     'double',
     'enum',
     'exception',
+    'false',
     'float',
     'getraises',
     'getter',
@@ -104,6 +93,7 @@ reserved = {
     'short',
     'static',
     'stringifier',
+    'true',
     'typedef',
     'unsigned',
     'void',
@@ -115,6 +105,10 @@ def t_identifier(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in reserved:
         t.type = t.value
+    if t.value == 'true':
+        t.value = True
+    if t.value == 'false':
+        t.value = False
     return t
 
 # Parser
