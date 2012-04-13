@@ -13,6 +13,8 @@ tokens = [
     'hexinteger',
     'decimalinteger',
     'string',
+    'true',
+    'false',
     'identifier',
 ]
 
@@ -55,6 +57,16 @@ def t_decimalinteger(t):
 def t_string(t):
     r'"[^"]*"'
     t.value = t.value[1:-1]
+    return t
+
+def t_true(t):
+    r'true'
+    t.value = True
+    return t
+
+def t_false(t):
+    r'false'
+    t.value = False
     return t
 
 reserved = {
@@ -271,8 +283,16 @@ def p_Const(p):
 
 def p_ConstValue(p):
     '''
-    ConstValue : integer
+    ConstValue : BooleanLiteral
+               | integer
                | null
+    '''
+    p[0] = p[1]
+
+def p_BooleanLiteral(p):
+    '''
+    BooleanLiteral : true
+                   | false
     '''
     p[0] = p[1]
 
